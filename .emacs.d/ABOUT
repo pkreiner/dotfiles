@@ -1,0 +1,4 @@
+Organization of this folder:
+- elpa/ holds packages installed by emacs' own package manager.
+- pk/ holds the code I've written myself.
+- srcs/ holds code I've downloaded and am using / developing on.
