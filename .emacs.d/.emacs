@@ -371,10 +371,17 @@
 ;; (setq solarized-height-plus-4 1)
 
 
-;; Add a shortcut for changing themes easily
+;; Add shortcuts for changing themes easily
 (bind-key "M-z t" 'customize-themes)
 ;; And changing fonts easily
-(bind-key "M-z f" 'set-frame-font)
+(bind-key "M-z f SPC" 'set-frame-font)
+(defconst garamond-font-string "-unknown-GaramondNo8-normal-normal-normal-*-16-*-*-*-*-0-iso10646-1")
+(defconst monospace-font-string "-unknown-Inconsolata-normal-normal-normal-*-16-*-*-*-m-0-iso10646-1")
+(bind-key "M-z f g" (lambda () (interactive) (set-frame-font garamond-font-string)))
+(bind-key "M-z f m" (lambda () (interactive) (set-frame-font monospace-font-string)))
+
+(bind-key "M-N" (lambda () (interactive) (scroll-up-line 5)))
+(bind-key "M-P" (lambda () (interactive) (scroll-down-line 5)))
 
 
 (custom-set-variables
@@ -443,6 +450,7 @@
  '(sml/inactive-foreground-color "#34495e")
  '(term-default-bg-color "#002b36")
  '(term-default-fg-color "#839496")
+ '(text-scale-mode-step 1.05)
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    (quote
