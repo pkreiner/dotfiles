@@ -26,7 +26,7 @@
 
 
 (defun today ()
-  "Insert string for today's date nicely formatted in American style,
+  "Insert string for today's date formatted nicely in American style,
 e.g. Monday, September 17, 2000."
   (interactive)
   (insert (format-time-string "%A, %B %e, %Y")))
@@ -87,13 +87,13 @@ delete that last blank line would fix this."
 
 
 (defun move-line-up ()
-  "Move the current line up"
+  "Swap this line with the previous one."
   (interactive)
   (transpose-lines 1)
   (forward-line -2)
   (indent-according-to-mode))
 (defun move-line-down ()
-  "Move the current line down"
+  "Swap this line with the next one."
   (interactive)
   (forward-line 1)
   (transpose-lines 1)
@@ -105,23 +105,14 @@ delete that last blank line would fix this."
   "Set the left and right margins of the current window"
   (set-window-margins (get-buffer-window) left right))
 
-(defun smarter-move-beginning-of-line (arg)
+(defun smarter-move-beginning-of-line ()
   "Move point back to indentation of beginning of line. Move point to
    the first non-whitespace character on this line. If point is
    already there, move to the beginning of the line. Effectively
    toggle between the first non-whitespace character and the beginning
-   of the line.
+   of the line."
 
-   If ARG is not nil or 1, move forward ARG - 1 lines first. If point
-   reaches the beginning or end of the buffer, stop there."
-  (interactive "^p")
-  (setq arg (or arg 1))
-
-  ;; Move lines first
-  (when (/= arg 1)
-    (let ((line-move-visual nil))
-      (forward-line (1- arg))))
-
+  (interactive)
   (let ((orig-point (point)))
     (back-to-indentation)
     (when (= orig-point (point))
@@ -168,28 +159,6 @@ delete that last blank line would fix this."
   (setq pk/screen-height (pk/get-screen-height)))
 
 
-;; Google-specific
-
-(if (eq system-type 'gnu/linux)
-    ;; set some paths involving my citc client name
-    (progn
-      (defun get-citc-path ()
-	"Get the part of the path before google3, e.g.
-        '/google/src/cloud/pkreiner/citc-name/'. Must be called
-        from a buffer whose path includes this path."
-	(substring buffer-file-name 0 (string-match "google3" buffer-file-name)))
-
-      (setq northstar-common-rel-path "google3/ads/display/northstar/gae/common/")
-      (setq mountie-rel-path "google3/ads/display/northstar/gae/workflows/mountie/")
-      (setq northstar-rel-path "google3/ads/display/northstar/gae/")
-      (defun get-northstar-common-abs-path ()
-	(concat (get-citc-path) northstar-common-rel-path))
-      (defun get-mountie-abs-path ()
-	(concat (get-citc-path) mountie-rel-path))
-      (defun get-northstar-abs-path ()
-	(concat (get-citc-path) northstar-rel-path))))
-
-
 ;; Call after sexp to append evaluated result. For example:
 ;; (+ 3 4)
 ;; (+ 3 4) = 7
@@ -233,7 +202,7 @@ delete that last blank line would fix this."
 (defun decrement-margins ()
   (interactive)
   (decrease-margins 1))
-(defhydra hydra-adjust-margins (global-map "M-z m")
+(defhydra hydra-adjust-margins (global-map "M-z a")
   "adjust margins"
   ("t" increment-margins "increase")
   ("h" decrement-margins "decrease")
@@ -317,7 +286,6 @@ desktop, a new project, with a name given by the user."
           (set-window-buffer (next-window) next-win-buffer)
           (select-window first-win)
           (if this-win-2nd (other-window 1))))))
-(bind-key "M-z h" 'toggle-window-split)
 
  (defun transpose-windows (arg)
    "Transpose the buffers shown in two windows."
@@ -330,4 +298,42 @@ desktop, a new project, with a name given by the user."
          (set-window-buffer (funcall selector) this-win)
          (select-window (funcall selector)))
        (setq arg (if (plusp arg) (1- arg) (1+ arg))))))
-(bind-key "M-z m" 'transpose-windows)
+
+(defun remove-line-breaks ()
+  "Remove line endings in a paragraph, or in all paragraphs in
+the selected region."
+  (interactive)
+  (let ((fill-column (point-max)))
+    (command-execute 'fill-paragraph)))
+
+(setq pk/whitespace-regexp "[ \t\n]+")
+(setq pk/non-whitespace-regexp "[^ \t\n]")
+
+
+;; (defun pk/forward-kill-whitespace ()
+;;   "Kill all whitespace -- spaces, tabs, and newlines -- between the point and the next non-whitespace character."
+;;   (interactive)
+;;   (let ((starting-point) (point))
+;;     (search-forward-regexp pk/non-whitespace-regexp)
+;;     (let ((target-point (match-beginning 0)))
+;;       (kill-region starting-point target-point))))
+
+(defun pk/kill-whitespace-forward ()
+  "Kill all whitespace -- spaces, tabs, and newlines -- between the point and the next non-whitespace character."
+  (interactive)
+  (let ((starting-point (point)))
+    (search-forward-regexp pk/non-whitespace-regexp)
+    (backward-char)
+    (kill-region starting-point (point))))
+(defun pk/kill-whitespace-backward ()
+  "Kill all whitespace -- spaces, tabs, and newlines -- between the point and the previous non-whitespace character."
+  (interactive)
+  (let ((starting-point (point)))
+    (search-backward-regexp pk/non-whitespace-regexp)
+    (forward-char)
+    (kill-region starting-point (point))))
+(defun pk/kill-whitespace-surrounding ()
+  "Kill all whitespace -- spaces, tabs, and newlines -- between the nearest non-whitespace characters before and after the point."
+  (interactive)
+  (pk/kill-whitespace-forward)
+  (pk/kill-whitespace-backward))

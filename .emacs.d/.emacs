@@ -162,11 +162,12 @@
   (use-package pk-org-functions
     :config
     (bind-key "M-a" 'pk/org-beginning-of-entry org-mode-map)
-    (bind-key "C-x k" 'pk/org-clear-entry org-mode-map)
+    (bind-key "M-e" 'pk/org-end-of-entry org-mode-map)
+    ;; (bind-key "C-x k" 'pk/org-clear-entry org-mode-map)
     (bind-key "C-M-<return>" 'pk/org-new-child org-mode-map)
     (bind-key "C-c M-r" 'pk/org-show-siblings org-mode-map)
-    (bind-key "C-M-<backspace>" 'pk/org-kill-backward-sentence-or-clear-entry)))
-
+    (bind-key "C-M-<backspace>" 'pk/org-kill-backward-sentence-or-clear-entry)
+    (bind-key "C-c C-M-r" 'pk/org-goto-final-child)))
 
 ;; (req-package pk-org-functions
 ;;   :require org
@@ -208,6 +209,11 @@
   :bind ("M-f e" . helm-cmd-t-elisp)
   :config (use-package pk-helm-cmd-t-config))
 
+(setq helm-swoop-split-direction 'split-window-horizontally)
+
+(global-anzu-mode 1)
+
+
 (use-package expand-region
   :ensure t
   :bind ("C-=" . er/expand-region))
@@ -222,6 +228,8 @@
 
 (use-package tex
   :ensure auctex)
+
+(require 'ein)
 
 (require 'haskell-mode)
 (require 'haskell-interactive-mode)
@@ -308,7 +316,10 @@
 (load-file pk/authentication-file)
 
 
-
+;; Flycheck
+(require 'flycheck)
+(setq flycheck-check-syntax-automatically '(mode-enabled save))
+;; (setq flycheck-idle-change-delay 1.0)
 
 
 ;; Programming
@@ -337,7 +348,7 @@
     ("8delta"		 "δ")
     ("8intersect"	 "∩")
     ("8contains"	 "∋")
-    ("8in"		 "∈")
+    ("8member"		 "∈")
     ("8nin"		 "∉")
     ("8inf"		 "∞")
     ("8ep"		 "ε")
@@ -352,7 +363,10 @@
     ("8exists"           "∃")
     ("8cappi"            "∏")
     ("8pi"               "π")
-    ))
+    ("8alpha"            "α")
+    ("8beta"             "β")
+    )
+  )
 (abbrev-mode 1)
 
 
@@ -382,6 +396,12 @@
 
 (bind-key "M-N" (lambda () (interactive) (scroll-up-line 5)))
 (bind-key "M-P" (lambda () (interactive) (scroll-down-line 5)))
+
+
+;; (setq org-image-actual-width t)
+
+
+(setq ag-highlight-search t)
 
 
 (custom-set-variables

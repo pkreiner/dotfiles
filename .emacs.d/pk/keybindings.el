@@ -16,7 +16,6 @@
 (global-unset-key (kbd "C-q"))
 (global-set-key (kbd "C-q") 'quit-next-help-window)
 (global-unset-key (kbd "C-b"))
-;; (global-set-key (kbd "C-b C-m") 'discover-my-major)
 (global-set-key (kbd "C-M-<backspace>") 'backward-kill-sentence)
 (global-set-key (kbd "M-s-<up>") 'move-line-up)
 (global-set-key (kbd "M-s-<down>") 'move-line-down)
@@ -42,8 +41,17 @@
 
 (global-set-key (kbd "C-h") 'backward-char)
 (global-set-key (kbd "C-t") 'forward-char)
-(global-set-key (kbd "C-M-h") 'backward-sentence)
-(global-set-key (kbd "C-M-t") 'forward-sentence)
+
+(defun forward-three-chars () (interactive) (forward-char 3))
+(defun backward-three-chars () (interactive) (forward-char -3))
+(bind-key "C-M-h" 'backward-three-chars prog-mode-map)
+(bind-key "C-M-t" 'forward-three-chars prog-mode-map)
+
+(bind-key "C-M-h" 'backward-sentence org-mode-map)
+(bind-key "C-M-h" 'backward-sentence text-mode-map)
+(bind-key "C-M-t" 'forward-sentence org-mode-map)
+(bind-key "C-M-t" 'forward-sentence text-mode-map)
+
 
 ;; (global-set-key (kbd "C-s") 'delete-backward-char)
 ;; (global-set-key (kbd "C-w") 'pk/backward-kill-word-punct)
@@ -51,15 +59,26 @@
 (global-set-key (kbd "C-x C-k") 'kill-region)
 (global-set-key (kbd "M-m") 'pk/kill-through-previous-punctuation)
 
-(global-set-key (kbd "C-z") 'isearch-forward)
 (global-set-key (kbd "C-b") 'help-command)
 (bind-key "C-r" 'emacs-index-search help-map)
+(defun describe-function-at-point () (interactive)
+       (describe-function (symbol-at-point)))
+(bind-key "C-f" 'describe-function-at-point help-map)
 
 
 ;; letting M-z be my personal prefix
 (global-unset-key (kbd "M-z"))
 (global-set-key (kbd "M-z d") 'today)
+(bind-key "M-z h" 'toggle-window-split)
+(bind-key "M-z m" 'transpose-windows)
+
+(bind-key "M-z k t" 'pk/kill-whitespace-forward)
+(bind-key "M-z k h" 'pk/kill-whitespace-backward)
+(bind-key "M-z k w" 'pk/kill-whitespace-surrounding)
+
+
 (defun pk/goto-other-buffer ()
+  "Switch back to most recent buffer."
   (interactive)
   (switch-to-buffer (other-buffer)))
 (bind-key "M-z b" 'pk/goto-other-buffer)
@@ -80,7 +99,6 @@
 (define-key haskell-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
 (define-key haskell-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
 (define-key haskell-mode-map (kbd "C-c c") 'haskell-process-cabal)
-(define-key haskell-mode-map (kbd "SPC") 'haskell-mode-contextual-space)
 
 (define-key haskell-cabal-mode-map (kbd "C-`") 'haskell-interactive-bring)
 (define-key haskell-cabal-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
@@ -89,11 +107,7 @@
 
 (define-key prog-mode-map (kbd "M-;") 'comment-or-uncomment-region-or-line)
 
-;; helm-do-ag bindings for searching specific directories
-(if (eq system-type 'gnu/linux)
-    (progn
-      (global-set-key (kbd "C-c s m") 'helm-ag-mountie)
-      (global-set-key (kbd "C-c s c") 'helm-ag-northstar-common)))
+
 
 ;; bindings for opening and searching over files
 

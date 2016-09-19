@@ -33,6 +33,20 @@
 
 (define-abbrev-table 'completion-list-mode-abbrev-table '())
 
+(define-abbrev-table 'conf-colon-mode-abbrev-table '())
+
+(define-abbrev-table 'conf-javaprop-mode-abbrev-table '())
+
+(define-abbrev-table 'conf-ppd-mode-abbrev-table '())
+
+(define-abbrev-table 'conf-space-mode-abbrev-table '())
+
+(define-abbrev-table 'conf-unix-mode-abbrev-table '())
+
+(define-abbrev-table 'conf-windows-mode-abbrev-table '())
+
+(define-abbrev-table 'conf-xdefaults-mode-abbrev-table '())
+
 (define-abbrev-table 'debugger-mode-abbrev-table '())
 
 (define-abbrev-table 'doctex-mode-abbrev-table '())
@@ -59,6 +73,8 @@
   '(
     ("/delta/" "𝜹" nil 0)
     ("/sigma/" "𝝨" nil 0)
+    ("8alpha" "α" nil 5)
+    ("8beta" "β" nil 3)
     ("8cappi" "∏" nil 0)
     ("8contains" "∋" nil 0)
     ("8delta" "δ" nil 0)
@@ -76,7 +92,7 @@
     ("8nequiv" "≢" nil 0)
     ("8neqv" "≢" nil 0)
     ("8nin" "∉" nil 0)
-    ("8pi" "π" nil 2)
+    ("8pi" "π" nil 0)
     ("8psubset" "⊂" nil 0)
     ("8psuperset" "⊃" nil 0)
     ("8sigma" "𝚺" nil 0)

@@ -3,15 +3,22 @@
 (defun pk/org-beginning-of-entry ()
   "Move point back to beginning of entry and return its position."
   (interactive)
-  ;; go to the beginning of the stars of the entry. note:
-  ;; back-to-indentation does not respect visual lines, so this works
-  ;; even on multi-line entries.
-  (back-to-indentation)
-  ;; go to the end of the stars
-  (search-forward-regexp "\**")
-  ;; go past the initial space
-  (forward-char)
-  (point))
+  (if (string-equal "*" (string (following-char)))
+      (progn (search-forward " ")
+             (point))
+    (search-backward "*")
+    (forward-char 2)
+    (point)))
+
+(defun pk/org-end-of-entry ()
+  "Move point to the end of the entry and return its position"
+  (interactive)
+  (if (string-equal "*" (string (following-char)))
+      (progn (search-forward " ")
+             (pk/org-end-of-entry))
+    (search-forward "*")
+    (backward-char 2)
+    (point)))
 
 (defun pk/org-clear-entry ()
   "Kill the contents of an entry but leave the stars."
@@ -30,7 +37,6 @@ of the sentence, whichever is closest."
 	 (begin (max sentence-begin entry-begin)))
     (goto-char begin)
     (kill-region begin start)))
-	
 
 
 ;; Never got this to work right.
@@ -87,10 +93,14 @@ of the sentence, whichever is closest."
 	result))))
 
 (defun pk/org-goto-final-sibling ()
-  (while (not (pk/org-is-final-sibling-p))
-    (org-forward-heading-same-level 1)))
+  (progn
+    (while (not (pk/org-is-final-sibling-p))
+      (org-forward-heading-same-level 1))
+    (pk/org-beginning-of-entry)))
+  
 
 (defun pk/org-goto-final-child ()
+  (interactive)
   (if (pk/org-has-children-p)
       (progn (show-children)
 	     (outline-next-heading)
@@ -132,3 +142,5 @@ children, with prefix arg)."
                (find-file file)
                (org-find-exact-headline-in-buffer headline))))
     (org-refile nil nil (list headline file nil pos))))
+
+
