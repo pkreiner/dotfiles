@@ -1,7 +1,8 @@
 #!/bin/bash
 
 home='/home/paul'
-backup_location='file:///home/paul/Dropbox/backup'
+backup_dir='/home/paul/Dropbox/backup'
+backup_location='file://'$backup_dir
 restore_target='/home/paul/tmp/restoretest'
 log_file='/home/paul/logs/backup-log'
 
@@ -44,6 +45,11 @@ duplicity full \
 # Only keep the most recent backup, to save space
 duplicity remove-all-but-n-full 1 $backup_location --force \
           >> $log_file 2>&1
+
+# Because this script is run in anacron, it's run as root, so the
+# backup files it writes only have root permissions. Let's add read
+# permissions for everyone so it's easier to copy these around.
+chmod a+r $backup_dir/*
 
 # Report collection status
 # duplicity collection-status $backup_location
