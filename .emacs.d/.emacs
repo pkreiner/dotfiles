@@ -6,8 +6,9 @@
 ;; Note: not including marmalade because it sucks.
 (setq package-archives
      '(("elpa" . "https://elpa.gnu.org/packages/")
-      ("melpa" . "https://melpa.milkbox.net/packages/")))
+      ("melpa" . "https://melpa.org/packages/")))
 (package-initialize)
+(package-refresh-contents)
 
 ;; Bootstrap 'use-package'
 (unless (package-installed-p 'use-package)
@@ -36,7 +37,7 @@
 ;     (set-default-font "inconsolata 13")
 ;; ))
 
-(set-default-font "inconsolata 12")
+; (set-default-font "inconsolata 12")
 
 ;; My Variables
 
@@ -75,8 +76,11 @@
 (global-unset-key (kbd "M-z"))
 (global-unset-key (kbd "C-M-c"))
 
-(key-chord-mode 1)
-(key-chord-define-global "qj" 'pk/goto-other-buffer)
+; to debug later
+;(use-package key-chord
+;  :config
+;  (key-chord-mode 1)
+;  (key-chord-define-global "qj" 'pk/goto-other-buffer))
 
 
 (global-set-key (kbd "C-w") 'backward-kill-word)
@@ -84,9 +88,10 @@
 (global-set-key (kbd "M-h") 'backward-word)
 (global-set-key (kbd "M-t") 'forward-word)
 
-(use-package go-back
-  :config
-  (bind-key "M-r" 'go-back/pop-point-stack global-map))
+; to debug later
+;(use-package go-back
+;  :config
+;  (bind-key "M-r" 'go-back/pop-point-stack global-map))
 
 (use-package pk-word-punct
   ;; :bind (("M-h" . pk/backward-word-punct)
@@ -103,17 +108,21 @@
   :commands elm-mode)
 (use-package literary-mode
   :commands literary-mode)
-(use-package window-number
-  :config
-  (window-number-mode)
-  (window-number-meta-mode))
-;; (use-package color-theme)
-;; ;; (color-theme-initialize)
-;; ;; (load-theme 'zenburn t)
+
+; to debug later
+;(use-package window-number
+;  :config
+;  (window-number-mode)
+;  (window-number-meta-mode))
+
+;; (color-theme-initialize)
+;; (load-theme 'zenburn t)
 ;; (use-package color-theme-solarized
-;;   :config (color-theme-solarized))
-;; ;; (require 'color-theme-solarized)
-;; ;; (color-theme-solarized)
+;;   :ensure t
+;;   ;; :config (color-theme-solarized)
+;;   )
+;; (require 'color-theme-solarized)
+;; (color-theme-solarized)
 
 
 ;; (use-package test-pkg
@@ -192,17 +201,19 @@
 ;;     (bind-key "M-a" 'pk/org-beginning-of-entry org-mode-map)
 ;;     (bind-key "C-x k" 'pk/org-clear-entry org-mode-map)))
 
-;; (use-package helm
-;;   :config
-;;   (use-package helm-config)
-;;   (use-package pk-helm-config
-;;     :bind ("M-t e" . helm-cmd-t-elisp)))
+(use-package helm
+  :ensure t
+  :config
+  (use-package helm-config)
+  (use-package pk-helm-config
+; :bind ("M-t e" . helm-cmd-t-elisp)))
+    ))
   
 (require 'helm)
 (require 'helm-config)
 ;; (require 'helm-cmd-t)			
 ;; (require 'pk-helm-config)
-(require 'pk-helm-config)
+;; (require 'pk-helm-config)
 (use-package pk-helm-functions
   :bind ("C-M-s" . pk/helm-occur-or-org-buffer-headings))
 (use-package helm-cmd-t
@@ -211,40 +222,47 @@
 
 (setq helm-swoop-split-direction 'split-window-horizontally)
 
-(global-anzu-mode 1)
+;; to debug later if I care
+;; (use-package anzu
+;;   :config
+;;   (global-anzu-mode 1))
 
 
-(use-package expand-region
-  :ensure t
-  :bind ("C-=" . er/expand-region))
+;; (use-package expand-region
+;;   :ensure t
+;;   :bind ("C-=" . er/expand-region))
 	 
-(use-package bm
-  :ensure t
-  :bind (("C-M-c b" . bm-toggle)
-	 ("C-M-c n" . bm-next)
-	 ("C-M-c p" . bm-previous))
-  :init (setq bm-restore-repository-on-load t)
-  :config (use-package bm-config))
+;; (use-package bm
+;;   :ensure t
+;;   :bind (("C-M-c b" . bm-toggle)
+;; 	 ("C-M-c n" . bm-next)
+;; 	 ("C-M-c p" . bm-previous))
+;;   :init (setq bm-restore-repository-on-load t)
+;;   :config (use-package bm-config))
 
 (use-package tex
   :ensure auctex)
 
-(require 'ein)
+(use-package ein
+  :ensure t)
 
-(require 'haskell-mode)
-(require 'haskell-interactive-mode)
-(require 'haskell-process)
 
-(defun pk/turn-on-haskell-interactive-mode-with-kbds ()
-  (interactive-haskell-mode 1)
-  (define-key interactive-haskell-mode-map (kbd "M-n") 'pk/forward-five-lines)
-  (define-key interactive-haskell-mode-map (kbd "M-p") 'pk/back-five-lines)
-  (define-key interactive-haskell-mode-map (kbd "M-t") 'forward-word)
-  (define-key interactive-haskell-mode-map (kbd "C-M-n") 'ghc-goto-next-error)
-  (define-key interactive-haskell-mode-map (kbd "C-M-p") 'ghc-goto-prev-error)
-  (define-key interactive-haskell-mode-map (kbd "C-M-t") 'ghc-insert-template-or-signature)
-  (define-key interactive-haskell-mode-map (kbd "C-M-.") 'xref-pop-marker-stack))
-(add-hook 'haskell-mode-hook 'pk/turn-on-haskell-interactive-mode-with-kbds)
+(use-package haskell-mode
+  :ensure t)
+;; (require 'haskell-interactive-mode)
+;; (require 'haskell-process)
+
+;; (defun pk/turn-on-haskell-interactive-mode-with-kbds ()
+;;   (interactive-haskell-mode 1)
+;;   (define-key interactive-haskell-mode-map (kbd "M-n") 'pk/forward-five-lines)
+;;   (define-key interactive-haskell-mode-map (kbd "M-p") 'pk/back-five-lines)
+;;   (define-key interactive-haskell-mode-map (kbd "M-t") 'forward-word)
+;;   (define-key interactive-haskell-mode-map (kbd "C-M-n") 'ghc-goto-next-error)
+;;   (define-key interactive-haskell-mode-map (kbd "C-M-p") 'ghc-goto-prev-error)
+;;   (define-key interactive-haskell-mode-map (kbd "C-M-t") 'ghc-insert-template-or-signature)
+;;   (define-key interactive-haskell-mode-map (kbd "C-M-.") 'xref-pop-marker-stack))
+;; (add-hook 'haskell-mode-hook 'pk/turn-on-haskell-interactive-mode-with-kbds)
+
 ;; (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
 ;; (add-hook 'haskell-mode-hook 'set-interactive-haskell-mode-keybindings)
 
@@ -311,14 +329,16 @@
 
 
 ;; Authentication
-(setq pk/authentication-file "~/.emacs.d/.emacs-authentication.el")
-(add-to-list 'load-path "~")
-(load-file pk/authentication-file)
+;; (setq pk/authentication-file "~/.emacs.d/.emacs-authentication.el")
+;; (add-to-list 'load-path "~")
+;; (load-file pk/authentication-file)
 
 
 ;; Flycheck
-(require 'flycheck)
-(setq flycheck-check-syntax-automatically '(mode-enabled save))
+(use-package flycheck
+  :ensure t
+  :config
+  (setq flycheck-check-syntax-automatically '(mode-enabled save)))
 ;; (setq flycheck-idle-change-delay 1.0)
 
 
@@ -402,6 +422,12 @@
 
 
 (setq ag-highlight-search t)
+
+
+(defun pk/insert-new-dashes-line ()
+  (interactive)
+  (insert "---------------------------------------"))
+(bind-key "M-z n" 'pk/insert-new-dashes-line)
 
 
 (custom-set-variables
@@ -519,6 +545,9 @@
 
 ;; This needs to be done after 'custom-safe-themes' are set in the
 ;; customization block above.
-(load-theme 'solarized-light)
+;; (load-theme 'solarized-light)
 
 
+
+(load-file (let ((coding-system-for-read 'utf-8))
+                (shell-command-to-string "agda-mode locate")))

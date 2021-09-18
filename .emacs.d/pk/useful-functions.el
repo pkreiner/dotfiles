@@ -202,11 +202,11 @@ delete that last blank line would fix this."
 (defun decrement-margins ()
   (interactive)
   (decrease-margins 1))
-(defhydra hydra-adjust-margins (global-map "M-z a")
-  "adjust margins"
-  ("t" increment-margins "increase")
-  ("h" decrement-margins "decrease")
-  ("n" nil "exit"))
+;; (defhydra hydra-adjust-margins (global-map "M-z a")
+;;   "adjust margins"
+;;   ("t" increment-margins "increase")
+;;   ("h" decrement-margins "decrease")
+;;   ("n" nil "exit"))
 
 
 (defun pk/pp-list (lst)
