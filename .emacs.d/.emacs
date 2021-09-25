@@ -109,6 +109,8 @@
 (use-package literary-mode
   :commands literary-mode)
 
+(use-package tweet-mode)
+
 ; to debug later
 ;(use-package window-number
 ;  :config
