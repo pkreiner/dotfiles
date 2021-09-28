@@ -431,6 +431,8 @@
   (insert "---------------------------------------"))
 (bind-key "M-z n" 'pk/insert-new-dashes-line)
 
+(bind-key "M-z d" 'add-new-note)
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

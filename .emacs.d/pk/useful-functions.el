@@ -337,3 +337,13 @@ the selected region."
   (interactive)
   (pk/kill-whitespace-forward)
   (pk/kill-whitespace-backward))
+
+
+(defun add-new-note ()
+  "Make a new file in <notes-directory>/mm_dd_yyyy, and enter
+literary mode."
+  (interactive)
+  (let* ((date-string (format-time-string "%m_%e_%Y"))
+	 (file-string (pk/join-paths notes-directory date-string)))
+    (find-file file-string)
+    (literary-mode 1)))
