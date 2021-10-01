@@ -346,4 +346,5 @@ literary mode."
   (let* ((date-string (format-time-string "%m_%e_%Y"))
 	 (file-string (pk/join-paths notes-directory date-string)))
     (find-file file-string)
-    (literary-mode 1)))
+    (literary-mode 1)
+    (text-mode 1)))
