@@ -343,8 +343,8 @@ the selected region."
   "Make a new file in <notes-directory>/mm_dd_yyyy, and enter
 literary mode."
   (interactive)
-  (let* ((date-string (format-time-string "%m_%e_%Y"))
+  (let* ((date-string (format-time-string "%m_%d_%Y"))
 	 (file-string (pk/join-paths notes-directory date-string)))
     (find-file file-string)
     (literary-mode 1)
-    (text-mode 1)))
+    (text-mode)))
