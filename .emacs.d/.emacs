@@ -93,15 +93,15 @@
 ;  :config
 ;  (bind-key "M-r" 'go-back/pop-point-stack global-map))
 
-(use-package pk-word-punct
+;(use-package pk-word-punct
   ;; :bind (("M-h" . pk/backward-word-punct)
   ;; 	 ("M-t" . pk/forward-word-punct)
   ;; 	 ("C-w" . backward-kill-word)
   ;; 	 ("M-d" . pk/kill-word-punct))
   :config
-  (key-chord-define-global "qw" 'pk/backward-kill-word-punct)
-  (key-chord-define-global "qb" 'pk/backward-word-punct)
-  (key-chord-define-global "qc" 'pk/forward-word-punct))
+;  (key-chord-define-global "qw" 'pk/backward-kill-word-punct)
+;  (key-chord-define-global "qb" 'pk/backward-word-punct)
+;  (key-chord-define-global "qc" 'pk/forward-word-punct))
 
 (use-package elm-mode
   :ensure t
@@ -168,8 +168,8 @@
   (bind-key "M-f t" (lambda () (interactive)
 		      (find-file notes-file)
 		      (goto-char (org-find-exact-headline-in-buffer "Thought Dump"))))
-  (key-chord-define-global ",."
-                           (lambda () (interactive) (org-capture nil "n")))
+;  (key-chord-define-global ",."
+;                           (lambda () (interactive) (org-capture nil "n")))
   (use-package pk-org-functions
     :config
     (bind-key "M-a" 'pk/org-beginning-of-entry org-mode-map)
@@ -206,13 +206,13 @@
 (use-package helm
   :ensure t
   :config
-  (use-package helm-config)
+;  (use-package helm-config)
   (use-package pk-helm-config
 ; :bind ("M-t e" . helm-cmd-t-elisp)))
     ))
   
 (require 'helm)
-(require 'helm-config)
+;(require 'helm-config)
 ;; (require 'helm-cmd-t)			
 ;; (require 'pk-helm-config)
 ;; (require 'pk-helm-config)
@@ -320,9 +320,8 @@
       `((".*" ,temporary-file-directory t)))
 ;; Sentences are separated by only one space after the period
 (setq sentence-end-double-space nil)
- ;; show line numbers in prog-mode. Note that linum-mode is dangerous
- ;; in that it makes it impossible to set left margins
-(add-hook 'prog-mode-hook 'linum-mode)
+ ;; show line numbers in prog-mode
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
 ;; Enable soft word-wrap in text-mode
 (add-hook 'text-mode-hook 'visual-line-mode)
 
@@ -553,5 +552,6 @@
 
 
 
-(load-file (let ((coding-system-for-read 'utf-8))
-                (shell-command-to-string "agda-mode locate")))
+;; (load-file (let ((coding-system-for-read 'utf-8))
+;; ;             (shell-command-to-string "agda-mode locate"))
+;; ))  
